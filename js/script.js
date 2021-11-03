@@ -2,13 +2,15 @@ const btn = document.getElementById('play-btn');
 const dimDifficoltà = document.getElementById('dimensions');
 const wrapGrid = document.getElementById('wrap-grid');
 
+
 //set grid
 btn.addEventListener('click', function()  {
+
     //creo dimensioni gridù
     const dimGrid = dimDifficoltà.value;
-    console.log(dimGrid);
     let numCells;
     let sideCell;
+
 
     //grandezze per difficoltà
     switch(dimGrid) {
@@ -24,8 +26,7 @@ btn.addEventListener('click', function()  {
             numCells = 49;
             sideCell = 7;
     }
-    console.log(numCells);
-    console.log(sideCell);
+
 
     //creo griglia
     const grid = document.createElement('div');
@@ -34,22 +35,31 @@ btn.addEventListener('click', function()  {
     //inserisco griglia
     wrapGrid.append(grid);
 
-    //creo quadrati
 
+    //creo quadrati
     for (let i = 1; i <= numCells ; i++ ) {
         const square = genSquare( [i] , sideCell);
 
         //square cliccabili
         square.addEventListener('click', function(){
-            console.log(this);
             this.classList.add('clicked')
-        })
+        });
 
         grid.append(square);
 
     }
 
+
+    //creo bombe
+    const listBombs = genBombe(numCells, 16);
+    console.log(listBombs);
+
+
 });
+
+
+
+// FUNCTION------
 
 
 /**
@@ -63,4 +73,32 @@ function genSquare (num , cells) {
     quad.style.width = `calc(100% / ${cells})`;
     quad.style.height = `calc(100% / ${cells})`;
     return quad;
+}
+
+
+/**
+ * creazione bombe
+ */
+function genBombe(totCells, totBombs) {
+    const bombs = [];
+
+    while(bombs.length < totBombs) {
+        //numeri random
+        const bomb = genNumRand(1, totCells);
+
+        //numero generato deve essere univoco
+        if(!bombs.includes(bomb)) {
+            bombs.push(bomb);
+        }
+    }
+    return bombs;
+}
+
+
+
+/**
+ * numeri random
+ */
+function genNumRand(min, max) {
+    return Math.floor(Math.random()*(max - min + 1)) + min;
 }
