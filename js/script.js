@@ -28,6 +28,18 @@ btn.addEventListener('click', function()  {
     }
 
 
+
+    //creo bombe
+    const listBombs = genBombe(numCells, 16);
+    console.log(listBombs);
+
+    //numero tentativi
+    const tentativi = [];
+    const maxTentativi = numCells - listBombs.length;
+    console.log('maxtent', maxTentativi);
+
+
+
     //creo griglia
     const grid = document.createElement('div');
     grid.classList.add('grid');
@@ -42,17 +54,14 @@ btn.addEventListener('click', function()  {
 
         //square cliccabili
         square.addEventListener('click', function(){
-            this.classList.add('clicked')
+
+            sqaureClick(square, listBombs, tentativi, maxTentativi);
+
         });
 
         grid.append(square);
 
     }
-
-
-    //creo bombe
-    const listBombs = genBombe(numCells, 16);
-    console.log(listBombs);
 
 
 });
@@ -101,4 +110,54 @@ function genBombe(totCells, totBombs) {
  */
 function genNumRand(min, max) {
     return Math.floor(Math.random()*(max - min + 1)) + min;
+}
+
+
+/**
+ * click sui quadrati
+ */
+function sqaureClick(square, listBombs, tentativi, maxTentativi) {
+    //capire che numero l'utente ha selezionato dalla tabella
+    const num = parseInt(square.innerHTML);
+    console.log('numero selezionato', num)
+    
+    //capire se il numero selezionato fa parte dell'array delle bombe
+    //controllare che non sia numero gia selezionato
+    if(listBombs.includes(num)) {
+        console.log('questa è una bomba');
+        //azioni dopo aver schiacciato una bomba
+        clickbomb(listBombs, tentativi, maxTentativi);
+    }
+    else if (!tentativi.includes(num)){
+        //cambio il colore perche è una bomba
+        square.classList.add('notbomb')
+
+        //aggiungere numero alla lista tentativi 
+        tentativi.push(num);
+
+        //controllo se numeri tentativi attuali è uguale a numero massimo tentativi 
+        if(tentativi.length === maxTentativi) {
+            console.log('hai vinto');
+        }
+    }
+}
+
+
+
+/**
+ * se si clicca la bomba
+ */
+function clickbomb(listBombs, tentativi, maxTentativi) {
+    //tutti i quadrati
+    const squares = document.querySelectorAll('.square');
+
+    //dopo aver cliccato una bomba pure le altre si mostrano
+    for(let i=0; i< squares.length; i++) {
+        const square = squares[i];
+        const squareValue = parseInt(square.innerHTML);
+
+        if(listBombs.includes(squareValue)) {
+            square.classList.add('bomb');
+        }
+    }
 }
