@@ -73,6 +73,12 @@ main {
     color: white;
 } 
 
+.message {
+    color: black;
+    text-align: center;
+    margin: 2rem;
+}
+
 
 footer {
     padding: 25px;

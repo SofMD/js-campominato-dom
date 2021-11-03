@@ -138,6 +138,12 @@ function sqaureClick(square, listBombs, tentativi, maxTentativi) {
         //controllo se numeri tentativi attuali è uguale a numero massimo tentativi 
         if(tentativi.length === maxTentativi) {
             console.log('hai vinto');
+
+            const messageEl = document.createElement('div');
+            let message = 'Hai vinto :)';
+            messageEl.classList.add('message');//stilo questa classse in css
+            messageEl.append(message);
+            document.getElementById('wrap-grid').append(messageEl);
         }
     }
 }
@@ -160,4 +166,17 @@ function clickbomb(listBombs, tentativi, maxTentativi) {
             square.classList.add('bomb');
         }
     }
+
+    let message = 'Hai vinto';
+
+    if(tentativi.length < maxTentativi ) {
+        message = `Peccato, Hai perso, Hai azzeccato ${tentativi.length} tentativi. Gioca ancora!...`;
+    }
+
+    //inserire messaggio nel dom
+    const messageEl = document.createElement('div');
+    messageEl.classList.add('message');//stilo questa classse in css
+    messageEl.append(message);
+    document.getElementById('wrap-grid').append(messageEl);
+
 }
